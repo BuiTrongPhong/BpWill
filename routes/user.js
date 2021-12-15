@@ -4,23 +4,50 @@ const validSignUp = require('../middlewares/validSignUp')
 const router = express.Router()
 
 router.route('/register-user')
-    .get(async (req, res) => {
-        UserController.userRegister(req.body, 'user', res)
+    .post(async (req, res, next) => {
+        try {
+            UserController.userRegister(req.body, 'user', res)
+        } catch (error) {
+            next(error)
+        }
     })
 router.route('/register-admin')
-.get(async (req, res) => {
-    UserController.userRegister(req.body, 'admin', res)
-}) 
+    .post(async (req, res, next) => {
+        try {
+            UserController.userRegister(req.body, 'admin', res)
+        } catch (error) {
+            next(error)
+        }
+    })
 router.route('/login-user')
-.get(async (req, res) => {
-    UserController.userLogin(req.body, 'user', res)
-}) 
+    .post(async (req, res, next) => {
+        try {
+            UserController.userLogin(req.body, 'user', res)
+        } catch (error) {
+            next(error)
+        }
+    })
 router.route('/login-admin')
-.get(async (req, res) => {
-    UserController.userLogin(req.body, 'admin', res)
-}) 
+    .post(async (req, res, next) => {
+        try {
+            UserController.userLogin(req.body, 'admin', res)
+        } catch (error) {
+            next(error)
+        }
+    })
+router.route('/logout-user')
+    .get(UserController.userAuth, async (req, res) => {
+       try {
+           req.user.tokens = req.user.tokens.filter(token => token = '')
+           console.log(req.user.tokens)
+           await req.user.save()
+       } catch (error) {
+           next(error)
+       }
+    })
+
 router.route('/profile')
-.get(UserController.userAuth, async (req, res) => {
-    return res.status(200).json(UserController.userProfile(req.user))
-}) 
+    .get(UserController.userAuth, async (req, res) => {
+        return res.status(200).json(UserController.userProfile(req.user))
+    })
 module.exports = router

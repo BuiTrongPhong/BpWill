@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const bcryptjs = require('bcryptjs')
+const { schema } = require('./Todo')
+const Todo = require('./Todo')
 const Schema = mongoose.Schema
 const UserSchema = new Schema({
     userName: {
@@ -16,8 +18,16 @@ const UserSchema = new Schema({
     },
     role: {
         type: String,
-        required: true
-    }
+        require: true
+    },
+    todos: [{
+        type: Schema.Types.ObjectId,
+        ref: Todo   
+    }],
+    tokens: [{
+        type: String,
+        require: true
+    }]
 }, {timestamps: true}) 
 UserSchema.pre('save', async function(next) {
     const password = this.password
