@@ -1,17 +1,19 @@
 const Todo = require('../models/Todo')
+const User = require('../models/User')
 const addTodo = async (req, res, next) => {
     try {
         const todo = new Todo(req.body)
+        todo.users = req.user._id
         await todo.save()
         res.status(201).json({message: 'add successfully'})
     } catch (error) {
-        next(error)
+        next(error) 
     }
 }
 const getTodo = async (req, res, next) => {
     try {
-        const todoList = await Todo.find({deleted: false})
-        console.log(todoList)
+        const todoList = await Todo.find({deleted: false, users: req.user._id}).populate('users')
+
         return res.status(200).json({todo: todoList})
     } catch (error) {
         next(error)
@@ -27,8 +29,19 @@ const deleteTodo = async (req, res, next) => {
         next(error)
     }
 }
+const updateTodo = async (req, res, next) => {
+    try {
+        const todo = await Todo.findByIdAndUpdate(req.params.id, req.body)
+        console.log(req.body)
+        await todo.save()
+        return res.status(200).json({message: 'update successfully'})
+    } catch (error) {
+        next(error)
+    }
+}
 module.exports = {
     addTodo,
     getTodo,
-    deleteTodo
+    deleteTodo,
+    updateTodo
 }

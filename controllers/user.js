@@ -43,8 +43,6 @@ const userLogin = async (userCreds, role, res) => {
     let isMatch = await bcryptjs.compare(password, user.password)
     if (isMatch) {
         const token = createToken(user)
-        user.tokens = user.tokens.concat(token)
-        await user.save()
         const result = {
             userName: user.userName,
             password: user.password,
@@ -63,6 +61,9 @@ const userLogin = async (userCreds, role, res) => {
         })
     }
 }
+const userLogout = () => {
+    
+}
 const userAuth = passport.authenticate('jwt', { session: false })
 const userProfile = user => {
     return {
@@ -77,5 +78,6 @@ module.exports = {
     userAuth,
     userRegister,
     userLogin,
-    userProfile
+    userProfile,
+    userLogout
 }

@@ -10,7 +10,7 @@ const opts = {
 module.exports = (passport) => {
     passport.use(new Strategy(opts, async(payload, done) => {
         try {
-            const user = await User.findOne({_id: payload.sub, tokens: token})
+            const user = await User.findOne({_id: payload.sub})
             if(!user){
                 return done(null, false)
             }
@@ -19,5 +19,5 @@ module.exports = (passport) => {
             return done(error, false)
         }
 
-    }))
+    })) 
 }

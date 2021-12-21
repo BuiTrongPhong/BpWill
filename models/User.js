@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const bcryptjs = require('bcryptjs')
-const { schema } = require('./Todo')
 const Todo = require('./Todo')
 const Schema = mongoose.Schema
 const UserSchema = new Schema({
@@ -19,15 +18,13 @@ const UserSchema = new Schema({
     role: {
         type: String,
         require: true
-    },
-    todos: [{
-        type: Schema.Types.ObjectId,
-        ref: Todo   
-    }],
-    tokens: [{
-        type: String,
-        require: true
-    }]
+    }, 
+    todos: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: Todo
+        }
+    ]
 }, {timestamps: true}) 
 UserSchema.pre('save', async function(next) {
     const password = this.password
@@ -36,5 +33,5 @@ UserSchema.pre('save', async function(next) {
     this.password = hashPassword
     next();
 })
-const User = mongoose.model('user', UserSchema)
+const User = mongoose.model('User', UserSchema)
 module.exports = User

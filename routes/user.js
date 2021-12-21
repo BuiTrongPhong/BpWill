@@ -35,16 +35,6 @@ router.route('/login-admin')
             next(error)
         }
     })
-router.route('/logout-user')
-    .get(UserController.userAuth, async (req, res) => {
-       try {
-           req.user.tokens = req.user.tokens.filter(token => token = '')
-           console.log(req.user.tokens)
-           await req.user.save()
-       } catch (error) {
-           next(error)
-       }
-    })
 
 router.route('/profile')
     .get(UserController.userAuth, async (req, res) => {
