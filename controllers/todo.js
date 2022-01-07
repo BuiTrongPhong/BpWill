@@ -4,6 +4,7 @@ const addTodo = async (req, res, next) => {
     try {
         const todo = new Todo(req.body)
         todo.users = req.user._id
+        console.log(todo)
         await todo.save()
         res.status(201).json({message: 'add successfully'})
     } catch (error) {
@@ -32,8 +33,8 @@ const deleteTodo = async (req, res, next) => {
 const updateTodo = async (req, res, next) => {
     try {
         const todo = await Todo.findByIdAndUpdate(req.params.id, req.body)
-        console.log(req.body)
         await todo.save()
+        console.log(todo)
         return res.status(200).json({message: 'update successfully'})
     } catch (error) {
         next(error)

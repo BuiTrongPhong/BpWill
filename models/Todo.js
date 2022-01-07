@@ -9,10 +9,17 @@ const TodoSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    startDate: {
+        type: Date
+        
+    },
+    endDate: {
+        type: Date
+    },
     users: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }]
-}, {timestamps: true})
+}, { timestamps: true })
 const Todo = mongoose.model('Todo', TodoSchema)
 module.exports = Todo
